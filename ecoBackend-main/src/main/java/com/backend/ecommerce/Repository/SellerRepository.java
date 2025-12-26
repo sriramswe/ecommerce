@@ -13,4 +13,5 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
     Optional<Seller> findByEmail(String email); // If email is unique for sellers
     boolean existsByGstNumber(String gstNumber);
     boolean existsByEmail(String email);
+
 }

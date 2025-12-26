@@ -62,9 +62,10 @@ public class User implements UserDetails {
     private LocalDateTime Lastlogin;
     private LocalDateTime LastLogout;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>(Collections.singleton(new SimpleGrantedAuthority(roles)));
+        return List.of();
     }
 
     @Override

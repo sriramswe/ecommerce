@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StoreDto {
-    private String Id;
+    private Long Id;
     private String brand;
     private User storeAdmin;
     private LocalDateTime createAt;

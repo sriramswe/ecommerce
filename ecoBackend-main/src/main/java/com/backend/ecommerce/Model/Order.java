@@ -2,8 +2,6 @@ package com.backend.ecommerce.Model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,39 +11,41 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "orders")
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "Order_Id")
-    private String OrderId;
+
+    @Column(name = "order_id")
+    private String orderId;
 
     @ManyToOne
     private User user;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    private LocalDateTime OrderDate;
-
+    private LocalDateTime orderDate;
     private LocalDateTime deliveryDate;
+    private LocalDateTime shippingDate;
+    private LocalDateTime confirmDate;
+    private LocalDateTime cancelledDate;
+    private LocalDateTime createdAt;
 
-    @OneToOne
-    private Address ShippingAddress;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address shippingAddress;
 
     @Embedded
-    private PaymentDetails paymentDetails = new PaymentDetails();
+    private PaymentDetails paymentDetails;
 
-    private double TotalPrice;
+    private double totalPrice;
+    private Integer totalDiscountedPrice;
+    private Integer discount;
 
-    private Integer TotalDiscountedPrice;
-
-    private Integer Discount;
-   @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    private int totalItems;
-    private LocalDateTime ConfirmDate;
-    private LocalDateTime createdAt;
-    private LocalDateTime ShippingDate;
 
-   private LocalDateTime CancelledDate;
+    private int totalItems;
 }

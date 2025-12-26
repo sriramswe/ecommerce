@@ -2,6 +2,7 @@ package com.backend.ecommerce.Controller;
 
 
 import com.backend.ecommerce.Exception.UserException;
+import com.backend.ecommerce.Model.Product;
 import com.backend.ecommerce.Model.User;
 import com.backend.ecommerce.Model.WislistItems;
 import com.backend.ecommerce.Payload.DTO.WatchListItemsDto;
@@ -21,7 +22,7 @@ public class WatchListController {
 
 
     @PostMapping("/{productId}")
-    public ResponseEntity<WislistItems>addToWishList(@PathVariable Long productId,@RequestHeader("Authorization") String Jwt) throws UserException,Exception{
+    public ResponseEntity<WislistItems>addToWishList(@PathVariable Product productId, @RequestHeader("Authorization") String Jwt) throws UserException,Exception{
         User user = userService.getCurrentUser();
         return ResponseEntity.ok(wishListService.addToList(productId,user));
 
@@ -41,6 +42,6 @@ public class WatchListController {
      @GetMapping
     public ResponseEntity<WislistItems> getAllWish(@RequestHeader String Jwt) throws Exception,UserException{
         User user = userService.getCurrentUser();
-        return ResponseEntity.ok((WislistItems) wishListService.getALlWishList(user));
+        return ResponseEntity.ok((WislistItems) wishListService.getUserWishList(user));
      }
 }

@@ -4,6 +4,7 @@ import com.backend.ecommerce.Config.JwtProvider;
 import com.backend.ecommerce.Exception.UserException;
 import com.backend.ecommerce.MapStruct.UserMapper;
 import com.backend.ecommerce.Model.User;
+import com.backend.ecommerce.Model.UserRole;
 import com.backend.ecommerce.Payload.DTO.UserDto;
 import com.backend.ecommerce.Payload.Request.LoginRequest;
 import com.backend.ecommerce.Payload.Response.AuthResponse;
@@ -41,7 +42,7 @@ public class AuthServiceImpl implements AuthService{
           User newUSer = new User();
          newUSer.setEmail(userDto.getEmail());
          newUSer.setPassword(passwordEncoder.encode(userDto.getPassword()));
-         newUSer.setRoles(userDto.getRole());
+         newUSer.setRoles(UserRole.valueOf(userDto.getRole()));
          newUSer.setFirstName(userDto.getFirstName());
          newUSer.setLastName(userDto.getLastName());
          newUSer.setCreateAt(LocalDateTime.now());

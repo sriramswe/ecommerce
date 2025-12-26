@@ -43,7 +43,8 @@ public class Product {
     private String brand;
 
     private String color;
-
+    @ManyToOne
+     private  Seller seller;
     private String imageUrl;
      @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Rating> ratings = new ArrayList<>();
@@ -61,6 +62,6 @@ public class Product {
      private Category category;
      @Column(name = "num_ratings")
      private int numRatings;
-
+  private LocalDateTime updatedAt;
   private LocalDateTime created_At;
 }

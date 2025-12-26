@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 @Getter
 @Entity
+@Access(AccessType.FIELD)
 public class Address {
 
     @Id
@@ -26,10 +27,10 @@ public class Address {
     private String city;
     @Column(name = "state")
     private String State;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "zip_code")
+
+    @Column(name = "zipcode", nullable = false)
     private String zipcode;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -2,13 +2,17 @@ package com.backend.ecommerce.Service;
 
 
 import com.backend.ecommerce.Exception.BadRequestException;
+import com.backend.ecommerce.MapStruct.ProductMapper;
+import com.backend.ecommerce.MapStruct.SellerMappers;
+import com.backend.ecommerce.Model.Product;
+import com.backend.ecommerce.Payload.DTO.ProductDto;
 import com.backend.ecommerce.Payload.DTO.SellerRequestDto;
-import com.backend.ecommerce.MapStruct.SellerMapper;
 
 import com.backend.ecommerce.Model.Seller;
 import com.backend.ecommerce.Model.User;
 import com.backend.ecommerce.Model.UserRole;
 import com.backend.ecommerce.Payload.DTO.SellerDTO;
+import com.backend.ecommerce.Repository.ProductRepository;
 import com.backend.ecommerce.Repository.SellerRepository;
 import com.backend.ecommerce.Repository.UserRepository;
 import com.backend.ecommerce.Exception.ResourceNotFoundException;
@@ -30,9 +34,10 @@ public class SellerServiceImpl implements SellerService {
 
     private final SellerRepository sellerRepository;
     private final UserRepository userRepository; // To manage User entity
-    private final SellerMapper sellerMapper;
+    private final SellerMappers sellerMapper;
     private final PasswordEncoder passwordEncoder; // For hashing passwords
-
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     // Register a new seller (with new user)
     @Transactional
@@ -151,7 +156,7 @@ public class SellerServiceImpl implements SellerService {
             }
         }
 
-        sellerMapper.updateSellerFromDto(sellerRequestDto, existingSeller);
+        sellerMapper.updateEntity(sellerRequestDto, existingSeller);
         // Explicitly set email if it's updated in DTO and not handled by mapper update
         if (sellerRequestDto.getEmail() != null) {
             existingSeller.setEmail(sellerRequestDto.getEmail());
@@ -179,5 +184,80 @@ public class SellerServiceImpl implements SellerService {
         // seller.setUser(null);
         // sellerRepository.save(seller); // Save the disassociated seller
         sellerRepository.delete(seller);
+    }
+
+    @Override
+    @Transactional
+    public ProductDto createProduct(Long sellerId, ProductDto productRequestDTO) throws BadRequestException {
+         Seller seller = sellerRepository.findById(sellerId)
+                 .orElseThrow(()-> new ResourceNotFoundException("Seller not found With Id:"+ sellerId));
+        Product product = ProductMapper.toEntity(productRequestDTO);
+        product.setSeller(seller);
+        product.setCreated_At(LocalDateTime.now());
+        Product savedProduct  = productRepository.save(product);
+
+        return  ProductMapper.toDto(savedProduct);
+    }
+
+    @Override
+    public List<ProductDto> getProductsBySeller(Long sellerId) {
+        Seller seller = sellerRepository.findById(sellerId)
+                .orElseThrow(()-> new ResourceNotFoundException(
+                        "Seller Not found with Id:" + sellerId
+                ));
+
+
+        return productRepository.findBySeller_Id(seller.getId())
+                .stream()
+                .map(ProductMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductDto getProductById(Long sellerId, Long productId) throws org.apache.coyote.BadRequestException {
+       Product product = productRepository.findById(productId)
+               .orElseThrow(()-> new ResourceNotFoundException(
+                       "Product not found with Id:"+ productId
+               ));
+       if (!product.getSeller().getId().equals(sellerId)){
+           throw new org.apache.coyote.BadRequestException("You are not Allowed to access this product");
+       }
+       return ProductMapper.toDto(product);
+    }
+
+    @Override
+    @Transactional
+    public ProductDto updateProduct(Long sellerId, Long productId, ProductDto productRequestDTO) throws BadRequestException {
+       Product product = productRepository.findById(productId)
+               .orElseThrow(
+                       () -> new ResourceNotFoundException(
+                               "Product not found With Id:"
+                           + productId
+                       )
+               );
+       if (!product.getSeller().getId().equals(sellerId)){
+           throw  new BadRequestException("You are not allowed to update this product");
+       }
+       ProductMapper.updateEntity(productRequestDTO,product);
+       product.setUpdatedAt(LocalDateTime.now());
+       Product updatedProduct = productRepository.save(product);
+       return ProductMapper.toDto(updatedProduct);
+
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteProduct(Long sellerId, Long productId) throws BadRequestException {
+          Product product = productRepository.findById(productId)
+                  .orElseThrow(
+                          () -> new ResourceNotFoundException(
+                                  "product Not found with Id:" + productId
+                          )
+                  );
+          if(!product.getSeller().getId().equals(sellerId)){
+              throw new BadRequestException("you are Not Allowed to Delete this product ");
+          }
+             productRepository.delete(product);
     }
 }

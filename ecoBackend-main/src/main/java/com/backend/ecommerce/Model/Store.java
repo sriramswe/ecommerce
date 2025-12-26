@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String Id;
+    private Long Id; // changed from String to Long
 
     @Column(nullable = false)
     private String brand;
@@ -42,9 +42,5 @@ public class Store {
     protected  void onUpdate(){
         updateAt = LocalDateTime.now();
     }
-
-
-
-
 
 }

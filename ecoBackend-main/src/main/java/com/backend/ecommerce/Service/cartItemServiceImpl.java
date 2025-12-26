@@ -63,13 +63,16 @@ private final ProductRepository productRepository;
     }
 
     @Override
-    public CartItemDTO isCartItemExist(Cart cart, Product product, String size, Long userId) throws Exception, UserException {
-        Optional<CartItem> existingItem = cart.getCartItems().stream()
-                .filter(item -> item.getProduct().getId().equals(product.getId())
-                        && item.getSize().equalsIgnoreCase(size))
-                .findFirst();
-
-        return (CartItemDTO) existingItem.orElse(null);
+    public CartItemDTO isCartItemExist(Long cartId, Long productId, String size) throws Exception, UserException {
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new Exception("Cart not found with id: " + cartId));
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new Exception("Product not found with id: " + productId));
+        CartItem existingItem = cartItemRepository.isCartItemExist(cart, product, size);
+        if (existingItem != null) {
+            return CartItemsMapper.toDTO(existingItem);
+        }
+        return null;
     }
 
 

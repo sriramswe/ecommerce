@@ -52,7 +52,7 @@ public class CartServiceImpl implements CartService {
         // 3️⃣ Get product
         Product product = productService.findProductById(cartItemDTO.getProductId());
 
-       CartItem existingItem = cartItemsService.isCartItemExist(cart, product, cartItemDTO.getSize(), user.getId());
+        CartItemDTO existingItem = cartItemsService.isCartItemExist(cart.getId(), product.getId(), cartItemDTO.getSize());
 
         if (existingItem == null) {
             CartItemDTO newItem = cartItemsService.createCartItem(cart, product, cartItemDTO);

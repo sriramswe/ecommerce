@@ -10,5 +10,11 @@ import org.springframework.stereotype.Repository;
 public interface CategoryRepository extends JpaRepository<Category,Long> {
     public Category findByName(String name);
 
-    Category findByNameAndParent(String secondLevelCategory, @NotNull @Size(max = 50) String name);
+    Category findByNameAndParentCategory(String name, Category parentCategory);
+
+    @Deprecated
+    default Category findByNameAndParent(String name, String parent) {
+        // This method is deprecated - use findByNameAndParentCategory instead
+        return null;
+    }
 }

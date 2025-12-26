@@ -12,11 +12,9 @@ import java.util.Optional;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
-    @Query(
-            "Select ci from CartItem ci Where ci.cart = :cart AND ci.product=:product AND ci.size=:size AND ci.userId =:userId"
-    )
-    CartItem isCartItemExist(@Param("cart")Cart cart,@Param("product")Product product,@Param("Size") String size,
-                             @Param("userId")Long userId);
+    @Query("SELECT ci FROM CartItem ci WHERE ci.cart = :cart AND ci.product = :product AND ci.size = :size")
+    CartItem isCartItemExist(@Param("cart") Cart cart, @Param("product") Product product, @Param("size") String size);
+
 
     CartItem findCartItemById(Long Id);
 

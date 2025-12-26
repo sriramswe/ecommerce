@@ -1,6 +1,4 @@
-
 services:
-
   mysql:
     image: mysql:8
     container_name: eco-mysql
@@ -9,11 +7,9 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_DATABASE: Ecommerce
     ports:
-      - "3308:3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-    networks:
-      - car-net
 
   app:
     build: .
@@ -26,11 +22,6 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Ecommerce
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
-    networks:
-      - car-net
-
-networks:
-  car-net:
 
 volumes:
   mysql_data:

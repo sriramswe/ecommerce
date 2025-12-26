@@ -1,6 +1,7 @@
 package com.backend.ecommerce.Repository;
 
 import com.backend.ecommerce.Model.Product;
+import com.backend.ecommerce.Model.Seller;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,10 +29,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("category") String category,
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice,
-            @Param("sort") String sort,
-            Integer minDiscount);
+            @Param("minDiscount") Integer minDiscount,
+            @Param("sort") Integer sort);
 
     List<Product> findByCategory_Name(String category);
+    List<Product> findBySeller_Id(Long sellerId);
 }
 
 

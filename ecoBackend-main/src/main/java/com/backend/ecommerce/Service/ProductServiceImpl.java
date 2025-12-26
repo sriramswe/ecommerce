@@ -36,10 +36,7 @@ public class ProductServiceImpl implements ProductService{
         }
 
         // 2️⃣ Find or create second-level category
-        // CategoryRepository#findByNameAndParent expects (String name, String parentName) but our Category entity
-        // stores parent as a Category. The existing repository signature is wrong; instead, try to find by name
-        // and parent name using the topCategory's name. If not found, create and set parentCategory reference.
-        Category secondLevel = categoryRepository.findByNameAndParent(productDto.getSecondLevelCategory(), topCategory.getName());
+        Category secondLevel = categoryRepository.findByNameAndParentCategory(productDto.getSecondLevelCategory(), topCategory);
         if (secondLevel == null) {
             secondLevel = new Category();
             secondLevel.setName(productDto.getSecondLevelCategory());
@@ -49,7 +46,7 @@ public class ProductServiceImpl implements ProductService{
         }
 
         // 3️⃣ Find or create third-level category
-        Category thirdLevel = categoryRepository.findByNameAndParent(productDto.getThirdlevelCategory(), secondLevel.getName());
+        Category thirdLevel = categoryRepository.findByNameAndParentCategory(productDto.getThirdlevelCategory(), secondLevel);
         if (thirdLevel == null) {
             thirdLevel = new Category();
             thirdLevel.setName(productDto.getThirdlevelCategory());
@@ -118,7 +115,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Page<Product> getAllProduct(String category, List<String> color, List<String> sizes, Integer minPrice, Integer maxPrice, Integer MinDiscount, String sort, String Stock, Integer pageNumber, Integer PageSize) {
         Pageable pageable = PageRequest.of(pageNumber,PageSize, Sort.by(sort));
-       List<Product> products = productRepository.filterProduct(category,minPrice,maxPrice,sort,MinDiscount);
+       List<Product> products = productRepository.filterProduct(category,minPrice,maxPrice, Integer.valueOf(sort),MinDiscount);
         if(!color.isEmpty()){
             products = products.stream().filter(p->color.stream().anyMatch(c-> c.equalsIgnoreCase(p.getColor()))).collect(
                     Collectors.toList()

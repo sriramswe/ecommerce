@@ -1,11 +1,6 @@
 package com.backend.ecommerce.Payload.DTO;
 
-import com.backend.ecommerce.Model.Category;
-import com.backend.ecommerce.Model.Rating;
-import com.backend.ecommerce.Model.Review;
-import com.backend.ecommerce.Model.Size;
-import jakarta.persistence.*;
-import lombok.Builder;
+import com.backend.ecommerce.Model.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -43,7 +38,7 @@ public class ProductDto {
 
   private Category category;
    private int numRatings;
-
+        private Seller sellerDTO;
     private LocalDateTime created_At;
 
     private String topLevelCategory;

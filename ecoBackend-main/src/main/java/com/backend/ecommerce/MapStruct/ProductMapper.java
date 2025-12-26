@@ -23,6 +23,7 @@ public class ProductMapper {
         productDto.setTitle(product.getTitle());
         productDto.setNumRatings(product.getNumRatings());
         productDto.setRatings(product.getRatings());
+        productDto.setSellerDTO(product.getSeller());
 
         return productDto;
     }
@@ -41,8 +42,25 @@ public class ProductMapper {
         product.setNumRatings(productDto.getNumRatings());
         product.setRatings(productDto.getRatings());
         product.setPrice(productDto.getPrice());
+        product.setSeller(productDto.getSellerDTO());
 
-
+        return product;
+    }
+    public static Product updateEntity(ProductDto productDto , Product product ){
+        product.setBrand(productDto.getBrand());
+        product.setCategory(productDto.getCategory());
+        product.setDescription(productDto.getDescription());
+        product.setDiscountedPrice(productDto.getDiscountedPrice());
+        product.setQuantity(productDto.getQuantity());
+        product.setImageUrl(productDto.getImageUrl());
+        product.setColor(productDto.getColor());
+        product.setCreated_At(productDto.getCreated_At());
+        product.setReviews(productDto.getReviews());
+        product.setTitle(productDto.getTitle());
+        product.setNumRatings(productDto.getNumRatings());
+        product.setRatings(productDto.getRatings());
+        product.setPrice(productDto.getPrice());
+        product.setSeller(productDto.getSellerDTO());
         return product;
     }
 

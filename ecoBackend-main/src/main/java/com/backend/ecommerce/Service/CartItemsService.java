@@ -15,7 +15,7 @@ public interface CartItemsService {
     CartItemDTO updateCartItem(CartItem cartItem, Long id, Long UserId) throws Exception, UserException;
 
     void deleteCartItem(Long CartItemsId, Long UserId)throws Exception, UserException;
-    CartItemDTO isCartItemExist(Cart cart, Product product, String size,Long userId)throws Exception, UserException;
+    CartItemDTO isCartItemExist(Long cartId, Long productId, String size) throws Exception, UserException;
     CartItemDTO findCartItemById(Long CartItemId, User user)throws Exception, UserException;
 
 }

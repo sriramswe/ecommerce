@@ -15,15 +15,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WishListService {
     private final WishListRepository wishListRepository;
-    private final UserService userService;
-    private final ProductService productService;
+
     private final ProductRepository productRepository;
 
 
-    public WislistItems addToList(Long productId, User user) throws  Exception{
-        Product product = productRepository.findById(productId)
+    public WislistItems addToList(Product products, User user) throws  Exception{
+        Product product = productRepository.findById(products.getId())
                 .orElseThrow(()-> new Exception("product not found here to Add"));
-              wishListRepository.findByUserAndProduct(user, product.getId())
+              wishListRepository.findByUserAndProduct(user, product)
                       .ifPresent(
                               w->{
                                   try{
@@ -43,9 +42,11 @@ public class WishListService {
     }
 
     public void removeWishlist(Long productId , User user){
-        wishListRepository.DeleteByUserAndProductId(user,productId);
+        Product product = productRepository.findById(productId)
+                        .orElseThrow(()-> new RuntimeException("product not found"));
+        wishListRepository.DeleteByUserAndProductId(user,product);
     }
-    public List<WislistItems> getALlWishList(User user){
+    public List<WislistItems> getUserWishList(User user){
         return  wishListRepository.findByUser(user);
 
     }

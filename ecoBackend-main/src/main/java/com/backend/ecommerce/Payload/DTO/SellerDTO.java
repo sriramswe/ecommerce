@@ -34,7 +34,7 @@ public class SellerDTO {
 
     private String gstNumber;
 
-    private BankDetails bankDetails; // Embedded object
+    private BankDetailsDTO bankDetails; // Embedded object
 
     private String photoUrl; // For logo/profile picture
 
