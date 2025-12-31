@@ -44,7 +44,7 @@ public class WishListService {
     public void removeWishlist(Long productId , User user){
         Product product = productRepository.findById(productId)
                         .orElseThrow(()-> new RuntimeException("product not found"));
-        wishListRepository.DeleteByUserAndProductId(user,product);
+        wishListRepository.deleteByUserAndProduct(user,product);
     }
     public List<WislistItems> getUserWishList(User user){
         return  wishListRepository.findByUser(user);

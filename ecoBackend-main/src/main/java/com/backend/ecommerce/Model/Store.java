@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +20,9 @@ public class Store {
 
     @Column(nullable = false)
     private String brand;
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
 
 
     @OneToOne

@@ -4,6 +4,8 @@ import com.backend.ecommerce.Model.Address;
 import com.backend.ecommerce.Payload.DTO.AddressDto;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 public class AddressMapper {
     public static AddressDto toDto(Address address){
@@ -20,7 +22,7 @@ public class AddressMapper {
         addressDto.setLastName(address.getLastName());
         return  addressDto;
     }
-    public static Address toEntity(AddressDto addressDto){
+    public static Address toEntity(AddressDto addressDto) throws IOException {
         Address address = new Address();
         address.setCity(addressDto.getCity());
         address.setId(addressDto.getId());

@@ -1,12 +1,39 @@
 package com.backend.ecommerce;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.backend.ecommerce.Model.*;
+import com.backend.ecommerce.Repository.*;
+import com.github.javafaker.Faker;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.time.LocalDateTime;
+import java.util.*;
 
 @SpringBootApplication
+@Configuration
+@RequiredArgsConstructor
 public class EcommerceApplication {
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    private final RatingRepository ratingRepository;
+    private final ReviewRepository reviewRepository;
+    private final WishListRepository wishlistRepository;
 
-	public static void main(String[] args) {
+    // added repositories used by seeder
+    private final CategoryRepository categoryRepository;
+    private final SellerRepository sellerRepository;
+    private final StoreRepository storeRepository;
+    private final AddressRespoitory addressRespoitory;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
+    private final OrderItemRepository orderItemRepository;
+
+    public static void main(String[] args) {
 		SpringApplication.run(EcommerceApplication.class, args);
 	}
 

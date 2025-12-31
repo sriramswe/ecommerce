@@ -9,6 +9,8 @@ import com.backend.ecommerce.Model.Rating;
 import com.backend.ecommerce.Payload.DTO.RatingDto;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 public class RatingsMapper {
 
@@ -24,7 +26,7 @@ public class RatingsMapper {
                 .build();
     }
 
-    public static Rating toEntity(RatingDto ratingDto) {
+    public static Rating toEntity(RatingDto ratingDto) throws IOException {
         if (ratingDto == null) return null;
 
         Rating rating = new Rating();

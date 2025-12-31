@@ -5,6 +5,7 @@ import com.backend.ecommerce.Model.OrderStatus;
 import com.backend.ecommerce.Payload.DTO.*;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.stream.Collectors;
 
 @Component
@@ -54,7 +55,7 @@ public class OrderMapper {
         return dto;
     }
 
-    public static Order toEntity(OrderDto dto) {
+    public static Order toEntity(OrderDto dto) throws IOException {
         if (dto == null) return null;
 
         Order order = new Order();

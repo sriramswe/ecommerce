@@ -11,6 +11,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -22,8 +24,9 @@ public class CategoryDto {
 
     private String name;
 
-
-    private Category parentCategory;
+    private Long parentId;
+    private String category_img;
+    private List<CategoryDto> children;
 
     private int level;
 }

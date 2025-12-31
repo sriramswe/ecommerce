@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -71,18 +70,18 @@ private final UserDetailsService userDetailsService;
 
   return httpSecurity.build();
     }
+    // Ensure CORS allows all methods and headers
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
             CorsConfiguration cfs = new CorsConfiguration();
-            cfs.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-            cfs.setAllowedMethods(Collections.singletonList("*"));
+            cfs.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+            cfs.setAllowedMethods(Collections.singletonList("*")); // Allow all HTTP methods
             cfs.setAllowCredentials(true);
-            cfs.setAllowedHeaders(Collections.singletonList("*"));
-            cfs.setExposedHeaders(Arrays.asList("Authorization"));
+            cfs.setAllowedHeaders(Collections.singletonList("*")); // Allow all headers
+            cfs.setExposedHeaders(Collections.singletonList("Authorization"));
             cfs.setMaxAge(3600L);
             return cfs;
-
         };
     }
     @Bean

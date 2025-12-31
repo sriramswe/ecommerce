@@ -27,26 +27,32 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    private String FirstName;
+    private String firstName;
 
-    private String LastName;
+    private String lastName;
 
-    private String Password;
+    @JsonIgnore
+    private String password;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] avatar;
 
     private String email;
 
-    @Column(unique = true)
+
     @Enumerated(EnumType.STRING)
     private UserRole roles;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10)
+    private Gender gender;   // ✅ NEW FIELD
 
     private String mobile;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Address> address = new ArrayList<>();
 
-    @Embedded
-    @ElementCollection
-    @CollectionTable(name = "payment_information")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<PaymentInformation> paymentInformations = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
@@ -58,14 +64,16 @@ public class User implements UserDetails {
     private List<Review> reviews = new ArrayList<>();
     @ManyToOne
     private Store store;
-    private LocalDateTime createAt;
-    private LocalDateTime Lastlogin;
-    private LocalDateTime LastLogout;
 
+    private LocalDateTime createAt;
+
+    private LocalDateTime lastLogin;
+
+    private LocalDateTime lastLogout;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return new ArrayList<>(Collections.singleton(new SimpleGrantedAuthority(roles.name())));
     }
 
     @Override

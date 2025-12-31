@@ -22,7 +22,8 @@ public class Category {
     @NotNull
     @Size(max = 50)
     private String name;
-
+    @Column(nullable = false, length = 500)
+    private String category_img;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
     private Category parentCategory;

@@ -34,32 +34,43 @@ public class JwtValidator extends OncePerRequestFilter {
         String token = null;
         String username = null;
 
-        // Check for Authorization header
-        if (header != null && header.startsWith("Bearer ")) {
-            token = header.substring(7); // Remove "Bearer "
-            username = jwtProvider.extractUsername(token);
-        }
+        try {
+            // Check for Authorization header
+            if (header != null && header.startsWith("Bearer ")) {
+                token = header.substring(7); // Remove "Bearer "
+                try {
+                    username = jwtProvider.extractUsername(token);
+                } catch (Exception e) {
+                    System.out.println("Invalid JWT token: " + e.getMessage());
+                    username = null;
+                }
+            }
 
-        // Validate and authenticate user
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Validate and authenticate user only if we have a valid token
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                try {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    if (jwtProvider.isTokenValid(token, userDetails)) {
+                        UsernamePasswordAuthenticationToken authToken =
+                                new UsernamePasswordAuthenticationToken(
+                                        userDetails,
+                                        null,
+                                        userDetails.getAuthorities()
+                                );
 
-            if (jwtProvider.isTokenValid(token, userDetails)) {
-
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
+                        authToken.setDetails(
+                                new WebAuthenticationDetailsSource().buildDetails(request)
                         );
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                        SecurityContextHolder.getContext().setAuthentication(authToken);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error loading user or validating token: " + e.getMessage());
+                }
             }
+        } catch (Exception e) {
+            System.out.println("JWT Filter Exception: " + e.getMessage());
         }
 
         // Continue filter chain

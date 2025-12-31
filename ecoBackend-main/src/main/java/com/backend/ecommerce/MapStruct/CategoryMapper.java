@@ -1,27 +1,39 @@
 package com.backend.ecommerce.MapStruct;
 
 import com.backend.ecommerce.Model.Category;
-import com.backend.ecommerce.Model.Product;
 import com.backend.ecommerce.Payload.DTO.CategoryDto;
-import com.backend.ecommerce.Payload.DTO.ProductDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CategoryMapper {
-    public static CategoryDto toDto(Category category){
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setParentCategory(category.getParentCategory());
-        categoryDto.setId(category.getId());
-        categoryDto.setName(category.getName());
-        categoryDto.setLevel(category.getLevel());
-        return categoryDto;
+
+    // ========= ENTITY → DTO =========
+    public CategoryDto toDto(Category category) {
+        if (category == null) return null;
+
+        return CategoryDto.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .level(category.getLevel())
+                .category_img(category.getCategory_img())
+                .parentId(
+                        category.getParentCategory() != null
+                                ? category.getParentCategory().getId()
+                                : null
+                )
+                .build();
     }
-    public static  Category toEntity(CategoryDto categoryDto){
+
+    // ========= DTO → ENTITY =========
+    // NOTE: parentCategory must be set in SERVICE (not here)
+    public Category toEntity(CategoryDto dto) {
+        if (dto == null) return null;
+
         Category category = new Category();
-        category.setParentCategory(categoryDto.getParentCategory());
-        category.setName(category.getName());
-        category.setLevel(category.getLevel());
-        category.setId(category.getId());
+        category.setId(dto.getId());
+        category.setName(dto.getName());
+        category.setLevel(dto.getLevel());
+        category.setCategory_img(dto.getCategory_img());
         return category;
     }
 }

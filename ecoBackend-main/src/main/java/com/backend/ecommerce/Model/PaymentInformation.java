@@ -1,30 +1,28 @@
 package com.backend.ecommerce.Model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.backend.ecommerce.Model.User;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+
+@Table(name = "payment_information")
 public class PaymentInformation {
 
-    @Column(name = "cardholder_name")
-    private String cardholderName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String cardNumber;
-
-    @Column(name = "expiration_date")
-    private LocalDate expirationDate;
-
-    @Column(name = "cvv")
+    private String expiryDate;
     private String cvv;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -1,5 +1,6 @@
 package com.backend.ecommerce.Model;
 
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Embeddable
 public class Size {
     private String name;
     private int quantity;

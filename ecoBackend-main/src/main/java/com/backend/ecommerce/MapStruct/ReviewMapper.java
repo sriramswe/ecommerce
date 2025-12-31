@@ -5,6 +5,8 @@ import com.backend.ecommerce.Model.Review;
 import com.backend.ecommerce.Payload.DTO.ReviewDto;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 public class ReviewMapper {
 
@@ -16,7 +18,7 @@ public class ReviewMapper {
         reviewDto.setCreateAt(review.getCreateAt());
         return reviewDto;
     }
-    public static Review toEntity(ReviewDto reviewDto, Category category){
+    public static Review toEntity(ReviewDto reviewDto, Category category) throws IOException {
         Review review = new Review();
         review.setId(reviewDto.getId());
         review.setProduct(ProductMapper.toEntity(reviewDto.getProduct()));

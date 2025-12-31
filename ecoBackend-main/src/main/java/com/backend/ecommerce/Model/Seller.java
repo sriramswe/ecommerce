@@ -34,7 +34,7 @@ public class Seller {
 
 
     private String msmeNumber;
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String gstNumber;
     @Embedded
     private BankDetails bankDetails;

@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,19 +23,15 @@ public class UserDto  {
     private Long id;
     private String firstName;
     private String lastName;
-    private String Password;
     private String email;
     private String mobile;
     private String role;
     private Store storeDto;
- private List<AddressDto> address = new ArrayList<>();
-
-private List<PaymentInformation> paymentInformation = new ArrayList<>();
-
-private List<Rating> ratings = new ArrayList<>();
-
-private List<Review> reviews = new ArrayList<>();
-
- private LocalDateTime createAt;
-
+    private byte[] avatar;
+    private List<AddressDto> address = new ArrayList<>();
+    private List<Rating> ratings = new ArrayList<>();
+    private List<Review> reviews = new ArrayList<>();
+    private LocalDateTime createAt;
+    private List<PaymentInformation> paymentInformationDto;
+    private String gender;
 }
